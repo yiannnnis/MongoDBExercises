@@ -1,0 +1,11 @@
+[{$unwind: {
+ path: '$items'
+}}, {$addFields: {
+ id: '$items.id',
+ title: '$items.snippet.title'
+}}, {$project: {
+ _id: 0,
+ kind: 0,
+ items: 0,
+ etag: 0
+}}]

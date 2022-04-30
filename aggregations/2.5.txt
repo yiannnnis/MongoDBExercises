@@ -1,0 +1,28 @@
+[{$group: {
+ _id: '$title',
+ video_id: {
+  $max: '$video_id'
+ },
+ publish_time: {
+  $max: '$publish_time'
+ }
+}}, {$match: {
+ publish_time: {
+  $gte: ISODate('2017-12-04T22:00:00.000Z'),
+  $lte: ISODate('2018-05-02T21:00:00.000Z')
+ }
+}}, {$project: {
+ date: {
+  $dateToString: {
+   format: '%Y-%m-%d',
+   date: '$publish_time'
+  }
+ }
+}}, {$group: {
+ _id: '$date',
+ count: {
+  $sum: 1
+ }
+}}, {$sort: {
+ _id: 1
+}}, {$out: '2.5'}]

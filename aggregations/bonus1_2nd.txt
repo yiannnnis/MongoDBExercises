@@ -1,0 +1,32 @@
+[{$group: {
+ _id: '$title',
+ views: {
+  $max: '$views'
+ },
+ likes: {
+  $max: '$likes'
+ },
+ dislikes: {
+  $max: '$dislikes'
+ },
+ category_id: {
+  $first: '$category_id'
+ }
+}}, {$lookup: {
+ from: 'cats',
+ localField: 'category_id',
+ foreignField: 'category_id',
+ as: 'categories'
+}}, {$addFields: {
+ tmp: '$categories.title'
+}}, {$addFields: {
+ Category_In_Text: {
+  $first: '$tmp'
+ }
+}}, {$project: {
+ category_id: 0,
+ categories: 0,
+ tmp: 0
+}}, {$sort: {
+ views: 1
+}}, {$out: 'bonus1'}]

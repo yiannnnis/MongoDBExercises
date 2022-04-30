@@ -1,0 +1,25 @@
+[{$group: {
+ _id: '$title',
+ video_id: {
+  $max: '$video_id'
+ },
+ views: {
+  $max: '$views'
+ },
+ tags: {
+  $max: '$tags'
+ }
+}}, {$sort: {
+ views: -1
+}}, {$set: {
+ tagcount: {
+  $size: {
+   $ifNull: [
+    '$tags',
+    []
+   ]
+  }
+ }
+}}, {$project: {
+ tags: 0
+}}, {$out: '2.2'}]

@@ -1,0 +1,38 @@
+[{$group: {
+ _id: '$title',
+ trending_date: {
+  $first: '$trending_date'
+ },
+ video_id: {
+  $max: '$video_id'
+ },
+ publish_time: {
+  $max: '$publish_time'
+ }
+}}, {$project: {
+ tr: {
+  $concat: [
+   '20',
+   '$trending_date'
+  ]
+ },
+ publish_time: 1
+}}, {$project: {
+ date: {
+  $dateFromString: {
+   format: '%Y.%d.%m',
+   dateString: '$tr'
+  }
+ },
+ publish_time: 1
+}}, {$project: {
+ Days_To_Trend: {
+  $dateDiff: {
+   startDate: '$publish_time',
+   endDate: '$date',
+   unit: 'day'
+  }
+ }
+}}, {$sort: {
+ Days_To_Trend: -1
+}}, {$out: 'bonus2'}]

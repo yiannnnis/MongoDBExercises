@@ -1,0 +1,19 @@
+[{$match: {
+ channel_title: 'Saturday Night Live'
+}}, {$group: {
+ _id: '$title',
+ video_id: {
+  $max: '$video_id'
+ },
+ views: {
+  $max: '$views'
+ },
+ likes: {
+  $max: '$likes'
+ },
+ dislikes: {
+  $max: '$dislikes'
+ }
+}}, {$sort: {
+ views: -1
+}}]

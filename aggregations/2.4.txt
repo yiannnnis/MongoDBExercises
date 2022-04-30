@@ -1,0 +1,31 @@
+[{$group: {
+ _id: '$title',
+ maxQuantity: {
+  $max: '$video_id'
+ },
+ views: {
+  $max: '$views'
+ },
+ likes: {
+  $max: '$likes'
+ },
+ dislike: {
+  $max: '$dislikes'
+ },
+ comments_disabled: {
+  $first: '$comments_disabled'
+ }
+}}, {$match: {
+ comments_disabled: 'TRUE'
+}}, {$group: {
+ _id: true,
+ mean_views: {
+  $avg: '$views'
+ },
+ mean_likes: {
+  $avg: '$likes'
+ },
+ mean_dislikes: {
+  $avg: '$dislike'
+ }
+}}, {$out: '2.4_true'}]
